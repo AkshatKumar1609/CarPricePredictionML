@@ -24,6 +24,7 @@ app.add_middleware(
 
 # Input schema
 class CarInput(BaseModel):
+    name : str
     company: str
     year: int
     kms_driven: int
@@ -32,6 +33,7 @@ class CarInput(BaseModel):
 @app.post("/predict")
 def predict_price(data: CarInput):
     input_df = pd.DataFrame([{
+        "name" : data.name,
         "company": data.company,
         "year": data.year,
         "kms_driven": data.kms_driven,
