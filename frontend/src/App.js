@@ -76,12 +76,16 @@ function App() {
         })
       });
       const data = await response.json();
-        if (data.predicted_price !== undefined && data.predicted_price !== null) {
-          setResult(`Predicted Price: ₹${data.predicted_price}`);
-        } else if (data.message) {
-          setResult(data.message);
+      if (data.predicted_price !== undefined && data.predicted_price !== null) {
+        if (data.predicted_price < 0) {
+          setError("Predicted price is very low.");
         } else {
-          setError(data.error || "Prediction failed.");
+          setResult(`Predicted Price: ₹${data.predicted_price}`);
+        }
+      } else if (data.message) {
+        setResult(data.message);
+      } else {
+        setError(data.error || "Prediction failed.");
       }
     } catch (err) {
       setError("Could not connect to prediction server.");
